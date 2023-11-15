@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Core.Interfaces;
 using System.Collections.Generic;
+using Core.Specifications;
+using ECommerceServerSide.Dtos;
+using AutoMapper;
 
 namespace ECommerceServerSide.Controllers
 {
@@ -14,37 +17,42 @@ namespace ECommerceServerSide.Controllers
         private readonly IGenericRepository<Product> productRepo;
         private readonly IGenericRepository<ProductBrand> brandRepo;
         private readonly IGenericRepository<ProductType> typeRepo;
+        private readonly IMapper mapper;
 
         public ProductsController(IGenericRepository<Product> productRepo,
                                     IGenericRepository<ProductBrand> brandRepo,
-                                    IGenericRepository<ProductType> typeRepo)
+                                    IGenericRepository<ProductType> typeRepo,
+                                    IMapper mapper)
         {
             this.productRepo = productRepo;
             this.brandRepo = brandRepo;
             this.typeRepo = typeRepo;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetAll()
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetAll()
         {
-            var products = await productRepo.GetAllAsync();
+            var specs = new ProductSpecification();
+            var products = await productRepo.GetAllAsync(specs);
 
             if (products != null)
             {
-                return Ok(products);
+                return products.Select(product => mapper.Map<Product, ProductDto>(product)).ToList();
             }
 
-            return new List<Product>().AsReadOnly();
+            return new List<ProductDto>().AsReadOnly();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Product>> GetProductById(int id)
+        public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
-            var product = await productRepo.GetById(id);
+            var specs = new ProductSpecification(id);
+            var product = await productRepo.GetEntityWithSpecsAsync(specs);
 
             if (product != null)
             {
-                return Ok(product);
+                return mapper.Map<Product, ProductDto>(product);
             }
 
             return NotFound();

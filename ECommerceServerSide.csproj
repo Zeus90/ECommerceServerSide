@@ -7,6 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\.DS_Store" />
+    <Content Remove="wwwroot\images\products\boot-ang1.png" />
+    <Content Remove="wwwroot\images\products\boot-ang2.png" />
+    <Content Remove="wwwroot\images\products\boot-core1.png" />
+    <Content Remove="wwwroot\images\products\boot-core2.png" />
+    <Content Remove="wwwroot\images\products\boot-redis1.png" />
+    <Content Remove="wwwroot\images\products\glove-code1.png" />
+    <Content Remove="wwwroot\images\products\glove-code2.png" />
+    <Content Remove="wwwroot\images\products\glove-react1.png" />
+    <Content Remove="wwwroot\images\products\glove-react2.png" />
+    <Content Remove="wwwroot\images\products\hat-core1.png" />
+    <Content Remove="wwwroot\images\products\hat-react1.png" />
+    <Content Remove="wwwroot\images\products\hat-react2.png" />
+    <Content Remove="wwwroot\images\products\sb-ang1.png" />
+    <Content Remove="wwwroot\images\products\sb-ang2.png" />
+    <Content Remove="wwwroot\images\products\sb-core1.png" />
+    <Content Remove="wwwroot\images\products\sb-core2.png" />
+    <Content Remove="wwwroot\images\products\sb-react1.png" />
+    <Content Remove="wwwroot\images\products\sb-ts1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
@@ -19,6 +42,28 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\.DS_Store" />
+    <None Include="wwwroot\images\products\boot-ang1.png" />
+    <None Include="wwwroot\images\products\boot-ang2.png" />
+    <None Include="wwwroot\images\products\boot-core1.png" />
+    <None Include="wwwroot\images\products\boot-core2.png" />
+    <None Include="wwwroot\images\products\boot-redis1.png" />
+    <None Include="wwwroot\images\products\glove-code1.png" />
+    <None Include="wwwroot\images\products\glove-code2.png" />
+    <None Include="wwwroot\images\products\glove-react1.png" />
+    <None Include="wwwroot\images\products\glove-react2.png" />
+    <None Include="wwwroot\images\products\hat-core1.png" />
+    <None Include="wwwroot\images\products\hat-react1.png" />
+    <None Include="wwwroot\images\products\hat-react2.png" />
+    <None Include="wwwroot\images\products\sb-ang1.png" />
+    <None Include="wwwroot\images\products\sb-ang2.png" />
+    <None Include="wwwroot\images\products\sb-core1.png" />
+    <None Include="wwwroot\images\products\sb-core2.png" />
+    <None Include="wwwroot\images\products\sb-react1.png" />
+    <None Include="wwwroot\images\products\sb-ts1.png" />
   </ItemGroup>
 
 </Project>
