@@ -1,18 +1,15 @@
-﻿using Infrastructure.Data;
-using Core.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Core.Interfaces;
-using System.Collections.Generic;
 using Core.Specifications;
 using ECommerceServerSide.Dtos;
 using AutoMapper;
+using ECommerceServerSide.Errors;
+using ECommerceServerSide.Helpers.Pagination;
 
 namespace ECommerceServerSide.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseController
     {
         private readonly IGenericRepository<Product> productRepo;
         private readonly IGenericRepository<ProductBrand> brandRepo;
@@ -31,20 +28,24 @@ namespace ECommerceServerSide.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetAll()
+        public async Task<ActionResult<Pagination<ProductDto>>> GetAll([FromQuery]ProductSpecsParams specsParams)
         {
-            var specs = new ProductSpecification();
+            var specs = new ProductSpecification(specsParams);
+            
+            var countSpec = new ProductSpecsWithFilter(specsParams);
+
+            var totalItems = await productRepo.CountAsync(countSpec);
+
             var products = await productRepo.GetAllAsync(specs);
 
-            if (products != null)
-            {
-                return products.Select(product => mapper.Map<Product, ProductDto>(product)).ToList();
-            }
+            var data = mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
-            return new List<ProductDto>().AsReadOnly();
+            return Ok(new Pagination<ProductDto>(specsParams.PageIndex, specsParams.PageSize, totalItems, data));
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse) ,StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProductDto) ,StatusCodes.Status200OK)]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
             var specs = new ProductSpecification(id);
@@ -55,7 +56,7 @@ namespace ECommerceServerSide.Controllers
                 return mapper.Map<Product, ProductDto>(product);
             }
 
-            return NotFound();
+            return NotFound(new ApiResponse(404));
         }
 
         [HttpGet("brands")]
